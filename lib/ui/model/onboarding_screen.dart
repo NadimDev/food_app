@@ -32,7 +32,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 controller: _onboardingController.pageController,
                 itemCount: _onboardingController.onBoardingPage.length,
                 onPageChanged: (int index) {
-                  currentIndex = index;
+                 setState(() {
+                   currentIndex = index;
+                 });
                 },
                 itemBuilder: (context, index) {
                   final page = _onboardingController.onBoardingPage[index];

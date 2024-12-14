@@ -54,7 +54,7 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: size.height / 3),
+              margin: EdgeInsets.only(top: size.height / 2),
               height: size.height,
               width: size.width,
               decoration: const BoxDecoration(
@@ -73,7 +73,7 @@ class _SignUpState extends State<SignUp> {
                   Image.asset(
                     'assets/images/7513626-removebg-preview.png',
                     width: size.width / 1.2,
-                    height: size.height / 10,
+                    height: size.height / 6,
                     fit: BoxFit.cover,
                     color: Colors.white,
                   ),
@@ -81,16 +81,50 @@ class _SignUpState extends State<SignUp> {
                   InputFeildSection(size, context),
                 ],
               ),
-            )
+            ),
+            signing_google(size)
           ],
         ),
       ),
     );
   }
 
+  Container signing_google(Size size) {
+    return Container(
+            height: size.height * 0.05,
+            margin:
+            EdgeInsets.only(top: size.height * 0.75, right: 20, left: 20),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: ColorFile.whiteColor,
+                    side: BorderSide(color: ColorFile.primaryColor),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/google.png",
+                      height: size.height * 0.04,
+                      width: size.width * 0.04,
+                    ),
+                    SizedBox(
+                      width: 70,
+                    ),
+                    Text(
+                      'Sign In With Google',
+                      style: TextFile.header1TextStyle(),
+                    ),
+                  ],
+                )),
+          );
+  }
+
   Material InputFeildSection(Size size, BuildContext context) {
     return Material(
       elevation: 4.0,
+
       borderRadius: BorderRadius.circular(20),
       child: Container(
         width: size.width,
@@ -168,6 +202,7 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(height: 24),
                   SizedBox(
                     width: size.width,
+                    height: size.height * 0.05,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: ColorFile.primaryColor),
