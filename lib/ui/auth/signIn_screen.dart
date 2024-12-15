@@ -18,6 +18,7 @@ class _SignInState extends State<SignIn> {
   bool isLoading = false;
   bool isVisible = false;
 
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -234,4 +235,8 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
+void onTabSineIn(){
+
+}
+
 }
