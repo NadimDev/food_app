@@ -266,7 +266,7 @@ class _SignUpState extends State<SignUp> {
             backgroundColor: ColorFile.primaryColor,
             'Registration Successfully');
       }
-      Navigator.push(
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => NavBar()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
