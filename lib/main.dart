@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/ui/model/onboarding_screen.dart';
+import 'package:food_app/ui/utils/color_file.dart';
+import 'package:food_app/ui/utils/elevated_button.dart';
 import 'package:food_app/ui/utils/inputDecoration_theme.dart';
 
 void main() async {
@@ -21,9 +23,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         inputDecorationTheme: CustomInputDecoration.inputDecoration(),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        elevatedButtonTheme: ElevatedButtonStyle(),
         useMaterial3: true,
       ),
       home: const OnboardingScreen(),
     );
+  }
+
+  ElevatedButtonThemeData ElevatedButtonStyle() {
+    return ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+      backgroundColor: ColorFile.primaryColor,
+      foregroundColor: Colors.white,
+      minimumSize: const Size(double.infinity, 48),
+    ));
   }
 }

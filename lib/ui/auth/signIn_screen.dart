@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/ui/auth/auth_controller.dart';
 import 'package:food_app/ui/auth/sign_up.dart';
 
 import '../utils/color_file.dart';
 import '../utils/text_format.dart';
+import 'ForgotePass.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -17,7 +19,7 @@ class _SignInState extends State<SignIn> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool isLoading = false;
   bool isVisible = false;
-
+  String email = '', pass = '';
 
   @override
   void dispose() {
@@ -66,7 +68,7 @@ class _SignInState extends State<SignIn> {
               child: const Text(''),
             ),
             SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: Column(
                 children: [
                   Image.asset(
@@ -90,34 +92,35 @@ class _SignInState extends State<SignIn> {
 
   Container signing_google(Size size) {
     return Container(
-            height: size.height * 0.05,
-            margin:
-                EdgeInsets.only(top: size.height * 0.75, right: 20, left: 20),
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: ColorFile.whiteColor,
-                    side: BorderSide(color: ColorFile.primaryColor),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8))),
-                onPressed: () {},
-                child: Row(
-                  children: [
-                    Image.asset(
-                      "assets/images/google.png",
-                      height: size.height * 0.04,
-                      width: size.width * 0.04,
-                    ),
-                    SizedBox(
-                      width: 70,
-                    ),
-                    Text(
-                      'Sign In With Google',
-                      style: TextFile.header1TextStyle(),
-                    ),
-                  ],
-                )),
-          );
+      height: size.height * 0.05,
+      margin: EdgeInsets.only(top: size.height * 0.85, right: 20, left: 20),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: ColorFile.whiteColor,
+              side: BorderSide(color: ColorFile.primaryColor),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8))),
+          onPressed: () {
+            AuthController().signUpWithGoogle(context: context);
+          },
+          child: Row(
+            children: [
+              Image.asset(
+                "assets/images/google.png",
+                height: size.height * 0.04,
+                width: size.width * 0.04,
+              ),
+              SizedBox(
+                width: 70,
+              ),
+              Text(
+                'Sign In With Google',
+                style: TextFile.header1TextStyle(),
+              ),
+            ],
+          )),
+    );
   }
 
   Material InputFeildSection(Size size, BuildContext context) {
@@ -184,7 +187,12 @@ class _SignInState extends State<SignIn> {
                   Container(
                     alignment: Alignment.topRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => const ForgotPass()));
+                      },
                       child: const Text('Forgot Password?'),
                     ),
                   ),
@@ -196,7 +204,15 @@ class _SignInState extends State<SignIn> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: ColorFile.primaryColor),
                       onPressed: () {
-                        if (_key.currentState!.validate()) {}
+                        if (_key.currentState!.validate()) {
+                          setState(() {
+                            email = _emailController.text;
+                            pass = _passController.text;
+                          });
+
+                          AuthController().signInWithEmail(
+                              email: email, password: pass, context: context);
+                        }
                       },
                       child: Text(
                         'Login',
@@ -235,8 +251,6 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
-void onTabSineIn(){
 
-}
-
+  void onTabSineIn() {}
 }

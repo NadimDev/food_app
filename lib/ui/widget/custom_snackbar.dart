@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-void showCustomSnackBar(BuildContext context, String message,
-    {Color backgroundColor = Colors.green, int durationInSeconds = 3}) {
+void showCustomSnackBar(BuildContext context,
+    {Color backgroundColor = Colors.green,
+    int durationInSeconds = 3,
+    required String message}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(

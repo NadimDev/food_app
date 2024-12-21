@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
+import 'package:food_app/ui/auth/auth_controller.dart';
 import 'package:food_app/ui/auth/signIn_screen.dart';
-import 'package:food_app/ui/core/nav_bar.dart';
 
 import '../utils/color_file.dart';
 import '../utils/text_format.dart';
-import '../widget/custom_snackbar.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -71,7 +70,7 @@ class _SignUpState extends State<SignUp> {
               child: const Text(''),
             ),
             SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: Column(
                 children: [
                   Image.asset(
@@ -96,7 +95,7 @@ class _SignUpState extends State<SignUp> {
   Container signing_google(Size size) {
     return Container(
       height: size.height * 0.05,
-      margin: EdgeInsets.only(top: size.height * 0.75, right: 20, left: 20),
+      margin: EdgeInsets.only(top: size.height * 0.85, right: 20, left: 20),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               elevation: 0,
@@ -104,7 +103,9 @@ class _SignUpState extends State<SignUp> {
               side: BorderSide(color: ColorFile.primaryColor),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8))),
-          onPressed: () {},
+          onPressed: () {
+            AuthController().signUpWithGoogle(context: context);
+          },
           child: Row(
             children: [
               Image.asset(
@@ -215,7 +216,8 @@ class _SignUpState extends State<SignUp> {
                             email = _emailController.text;
                             pass = _passController.text;
                           });
-                          registration();
+                          AuthController().registerWithEmail(
+                              context: context, email: email, password: pass);
                         }
                       },
                       child: Text(
@@ -254,30 +256,5 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
-  }
-
-  Future<void> registration() async {
-    try {
-      if (pass != null) {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: pass);
-        showCustomSnackBar(
-            context,
-            backgroundColor: ColorFile.primaryColor,
-            'Registration Successfully');
-      }
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => NavBar()));
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        showCustomSnackBar(
-            context,
-            backgroundColor: Colors.red,
-            'Password Provides is too weak');
-      } else if (e.code == 'email-already-in-use') {
-        showCustomSnackBar(
-            context, backgroundColor: Colors.red, 'Account already exsists');
-      }
-    }
   }
 }
