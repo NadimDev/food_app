@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/ui/core/nav_bar.dart';
+import 'package:food_app/ui/auth/signIn_screen.dart';
+import 'package:food_app/ui/home/nav_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../widget/custom_snackbar.dart';
@@ -29,7 +30,7 @@ class AuthController {
         message: 'Registration Successful',
       );
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (builder) => NavBar()));
+          context, MaterialPageRoute(builder: (builder) => const NavBar()));
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // Handle specific errors
@@ -54,6 +55,42 @@ class AuthController {
       }
       return null;
     }
+  }
+
+  Future<void> forgotPassword({
+    required String email,
+    required BuildContext context,
+  }) async {
+    try {
+      // Create a new user
+      await _auth.sendPasswordResetEmail(email: email);
+
+      // Show success message
+      showCustomSnackBar(
+        context,
+        backgroundColor: Colors.green,
+        message: 'Otp Send Successful',
+      );
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (builder) => const SignIn()));
+    } on FirebaseAuthException catch (e) {
+      // Handle specific errors
+      if (e.code == 'email-invalid') {
+        showCustomSnackBar(
+          context,
+          backgroundColor: Colors.red,
+          message: 'Enter valid email.',
+        );
+      } else {
+        showCustomSnackBar(
+          context,
+          backgroundColor: Colors.red,
+          message: 'Otp request failed: ${e.message}',
+        );
+      }
+      return;
+    }
+    return;
   }
 
   Future<void> signInWithEmail({

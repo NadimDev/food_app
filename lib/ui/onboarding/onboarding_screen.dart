@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../auth/sign_up.dart';
-import '../onboarding/onboarding_controller.dart';
+import 'onboarding_controller.dart';
 import '../utils/color_file.dart';
 import '../utils/text_format.dart';
-import 'onboarding_model.dart';
+import '../model/onboarding_model.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -27,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              flex: 3,
+              flex: 2,
               child: PageView.builder(
                 controller: _onboardingController.pageController,
                 itemCount: _onboardingController.onBoardingPage.length,
@@ -63,46 +63,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                          onPressed: () {
-                            if (currentIndex <
-                                _onboardingController.onBoardingPage.length -
-                                    1) {
-                              _onboardingController.pageController
-                                  .jumpToPage(2);
-                            }
-                          },
-                          child: Text(
-                            'Skip',
-                            style: TextFile.header2Text(),
-                          )),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorFile.primaryColor,
-                        ),
                         onPressed: () {
-                          if (currentIndex ==
+                          if (currentIndex <
                               _onboardingController.onBoardingPage.length - 1) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (builder) => SignUp(),
-                              ),
-                            );
-                          } else {
-                            _onboardingController.pageController.nextPage(
-                                duration: Duration(milliseconds: 500),
-                                curve: Curves.easeInOut);
+                            _onboardingController.pageController.jumpToPage(2);
                           }
                         },
                         child: Text(
-                            style: TextFile.header2Text()
-                                .copyWith(color: Colors.white),
-                            currentIndex ==
-                                    _onboardingController
-                                            .onBoardingPage.length -
-                                        1
-                                ? 'Get Started'
-                                : 'Next'),
+                          'Skip',
+                          style: TextFile.header2Text(),
+                        ),
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorFile.primaryColor,
+                          ),
+                          onPressed: () {
+                            if (currentIndex ==
+                                _onboardingController.onBoardingPage.length -
+                                    1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (builder) => SignUp(),
+                                ),
+                              );
+                            } else {
+                              _onboardingController.pageController.nextPage(
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut);
+                            }
+                          },
+                          child: Text(
+                              style: TextFile.header2Text()
+                                  .copyWith(color: Colors.white),
+                              currentIndex ==
+                                      _onboardingController
+                                              .onBoardingPage.length -
+                                          1
+                                  ? 'Get Started'
+                                  : 'Next'),
+                        ),
                       ),
                     ],
                   )

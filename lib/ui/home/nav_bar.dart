@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
-import 'package:food_app/ui/core/profile.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:food_app/ui/core/wallet.dart';
+import 'package:food_app/ui/home/profile.dart';
+import 'package:food_app/ui/home/wallet.dart';
 
 
 import 'home_screen.dart';
@@ -19,11 +18,11 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int currentIndex = 0;
 
-  final List<Widget> pages = [
-    const HomeScreen(),
-    const Order(),
-    const Wallet(),
-    const Profile(),
+  final List<Widget> pages = const [
+    HomeScreen(),
+    Order(),
+    Wallet(),
+    Profile(),
   ];
 
   @override
@@ -40,6 +39,7 @@ class _NavBarState extends State<NavBar> {
           Icon(Icons.wallet, color: Colors.white),
           Icon(Icons.person_outline, color: Colors.white),
         ],
+        index: currentIndex,
         onTap: (int index) {
           setState(
                 () {
