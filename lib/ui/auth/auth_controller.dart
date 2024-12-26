@@ -9,7 +9,6 @@ import '../widget/custom_snackbar.dart';
 class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Email Registration Method
   Future<User?> registerWithEmail({
     required String email,
     required String password,

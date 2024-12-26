@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:food_app/ui/auth/auth_controller.dart';
 import 'package:food_app/ui/auth/signIn_screen.dart';
-
+import 'package:random_string/random_string.dart';
+import 'dart:math' show Random;
+import '../../services/database.dart';
 import '../utils/color_file.dart';
 import '../utils/text_format.dart';
 
@@ -209,17 +210,7 @@ class _SignUpState extends State<SignUp> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: ColorFile.primaryColor),
-                      onPressed: () {
-                        if (_key.currentState!.validate()) {
-                          setState(() {
-                            name = _nameController.text;
-                            email = _emailController.text;
-                            pass = _passController.text;
-                          });
-                          AuthController().registerWithEmail(
-                              context: context, email: email, password: pass);
-                        }
-                      },
+                      onPressed: onTabSignUp,
                       child: Text(
                         'Sign Up',
                         style: TextFile.header1TextStyle()
@@ -256,5 +247,28 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void onTabSignUp() async {
+    if (_key.currentState!.validate()) {
+      setState(() {
+        name = _nameController.text;
+        email = _emailController.text;
+        pass = _passController.text;
+      });
+      AuthController().registerWithEmail(
+        context: context,
+        email: email,
+        password: pass,
+      );
+    }
+    String Id = randomAlphaNumeric(10);
+    Map<String, dynamic> userInfoMap = {
+      'Name': _nameController.text,
+      'Email': _emailController.text,
+      'Wallet': '0',
+      'Id': Id,
+    };
+    await DatabaseMethod.addUserDetails(userInfoMap, Id);
   }
 }
