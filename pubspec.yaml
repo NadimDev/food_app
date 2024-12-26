@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore: ^5.5.1
   google_sign_in: ^6.2.1
   flutter_stripe: ^11.3.0
+  http: ^1.2.2
 
 
 dev_dependencies:
