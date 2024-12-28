@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_app/ui/auth/auth_controller.dart';
 import 'package:food_app/ui/auth/signIn_screen.dart';
 import 'package:random_string/random_string.dart';
-import 'dart:math' show Random;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/database.dart';
+import '../services/share_pref.dart';
 import '../utils/color_file.dart';
 import '../utils/text_format.dart';
 
@@ -270,5 +271,9 @@ class _SignUpState extends State<SignUp> {
       'Id': Id,
     };
     await DatabaseMethod.addUserDetails(userInfoMap, Id);
+    await SharePefHelper.saveUserName(_nameController.text);
+    await SharePefHelper.saveUserEmail(_emailController.text);
+    await SharePefHelper.saveUserWallet('0');
+    await SharePefHelper.saveUserId(Id);
   }
 }
