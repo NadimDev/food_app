@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/ui/auth/auth_controller.dart';
 import 'package:food_app/ui/auth/signIn_screen.dart';
@@ -115,7 +116,7 @@ class _SignUpState extends State<SignUp> {
                 height: size.height * 0.04,
                 width: size.width * 0.04,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 70,
               ),
               Text(
@@ -257,23 +258,32 @@ class _SignUpState extends State<SignUp> {
         email = _emailController.text;
         pass = _passController.text;
       });
-      AuthController().registerWithEmail(
+
+      User? user = await AuthController().registerWithEmail(
         context: context,
         email: email,
         password: pass,
       );
+      if (user != null) {
+        // Registration successful
+        String id = randomAlphaNumeric(10);
+        Map<String, dynamic> userInfoMap = {
+          'Name': _nameController.text,
+          'Email': _emailController.text,
+          'Wallet': '0',
+          'Id': id,
+        };
+        await DatabaseMethod.addUserDetails(userInfoMap, id);
+        await SharePefHelper.saveUserName(_nameController.text);
+        await SharePefHelper.saveUserEmail(_emailController.text);
+        await SharePefHelper.saveUserWallet('0');
+        await SharePefHelper.saveUserId(id);
+      } else {
+        // Handle registration failure
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration failed. Please try again.')),
+        );
+      }
     }
-    String Id = randomAlphaNumeric(10);
-    Map<String, dynamic> userInfoMap = {
-      'Name': _nameController.text,
-      'Email': _emailController.text,
-      'Wallet': '0',
-      'Id': Id,
-    };
-    await DatabaseMethod.addUserDetails(userInfoMap, Id);
-    await SharePefHelper.saveUserName(_nameController.text);
-    await SharePefHelper.saveUserEmail(_emailController.text);
-    await SharePefHelper.saveUserWallet('0');
-    await SharePefHelper.saveUserId(Id);
   }
 }

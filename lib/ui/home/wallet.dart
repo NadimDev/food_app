@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:food_app/services/database.dart';
 import 'package:food_app/ui/services/share_pref.dart';
 import 'package:food_app/ui/utils/text_format.dart';
 import 'package:http/http.dart' as http;
@@ -18,25 +19,24 @@ class Wallet extends StatefulWidget {
 
 class _WalletState extends State<Wallet> {
   Map<String, dynamic>? paymentIntent;
-  late int add;
-  String? wallet;
+  int? add;
+  String? wallet, id;
 
-  Future<void> getSharePef() async {
+  getSharePef() async {
     wallet = await SharePefHelper.getUserWallet();
+    id = await SharePefHelper.getUserWallet();
     setState(() {});
   }
 
   Future<void> onLoad() async {
     await getSharePef();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
   void initState() {
-    super.initState();
     onLoad();
+    super.initState();
   }
 
   @override
@@ -45,91 +45,91 @@ class _WalletState extends State<Wallet> {
     return Scaffold(
       body: wallet == null
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : Container(
-        margin: const EdgeInsets.only(top: 60),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Material(
-              elevation: 2.0,
-              child: Container(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Center(
-                  child: Text(
-                    'Wallet',
-                    style: TextFile.headerTextStyle(),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              width: size.width,
-              height: 80,
-              decoration: BoxDecoration(color: Colors.grey.shade100),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/wallet.png',
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Your Wallet',
-                          style: TextFile.header3Text()
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Text(
-                          '\$${wallet ?? '0'}',
-                          style: TextFile.header1TextStyle(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              margin: const EdgeInsets.only(top: 60),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Add Money',
-                    style: TextFile.header1TextStyle(),
+                  Material(
+                    elevation: 2.0,
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Center(
+                        child: Text(
+                          'Wallet',
+                          style: TextFile.headerTextStyle(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: size.width,
+                    height: 80,
+                    decoration: BoxDecoration(color: Colors.grey.shade100),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/wallet.png',
+                            height: 60,
+                            width: 60,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(width: 16),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Your Wallet',
+                                style: TextFile.header3Text()
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              Text(
+                                '\$${wallet ?? '0'}',
+                                style: TextFile.header1TextStyle(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildAmountButton('100'),
-                      _buildAmountButton('500'),
-                      _buildAmountButton('1000'),
-                      _buildAmountButton('2000'),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Add Money'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Add Money',
+                          style: TextFile.header1TextStyle(),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildAmountButton('100'),
+                            _buildAmountButton('500'),
+                            _buildAmountButton('1000'),
+                            _buildAmountButton('2000'),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Add Money'),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -156,12 +156,12 @@ class _WalletState extends State<Wallet> {
 
   Future<void> makePayment(String amount) async {
     try {
-      paymentIntent = await createPaymentIntent(amount, 'INR');
+      paymentIntent = await createPaymentIntent(amount, 'USD');
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: paymentIntent!['client_secret'],
           googlePay: const PaymentSheetGooglePay(
-              testEnv: true, currencyCode: "INR", merchantCountryCode: "US"),
+              testEnv: true, currencyCode: "USD", merchantCountryCode: "US"),
           merchantDisplayName: 'Nadim',
         ),
       );
@@ -177,8 +177,9 @@ class _WalletState extends State<Wallet> {
   Future<void> displayPaymentSheet(String amount) async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      add = int.parse(wallet ?? '0') + int.parse(amount);
+      add = int.parse(wallet!) + int.parse(amount);
       await SharePefHelper.saveUserWallet(add.toString());
+      await DatabaseMethod.addWallet(id!,add.toString());
       await getSharePef();
       showDialog(
         context: context,
@@ -195,6 +196,7 @@ class _WalletState extends State<Wallet> {
           ),
         ),
       );
+      await getSharePef();
       paymentIntent = null;
     } catch (e) {
       print('Error during payment sheet display: $e');
