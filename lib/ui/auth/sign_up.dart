@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:food_app/ui/auth/auth_controller.dart';
 import 'package:food_app/ui/auth/signIn_screen.dart';
 import 'package:random_string/random_string.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/database.dart';
 import '../services/share_pref.dart';
 import '../utils/color_file.dart';
@@ -46,56 +45,54 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        child: Stack(
-          children: [
-            Container(
-              height: size.height,
-              width: size.width,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.blueAccent],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter),
+      body: Stack(
+        children: [
+          Container(
+            height: size.height,
+            width: size.width,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.blue, Colors.blueAccent],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: size.height / 2),
+            height: size.height,
+            width: size.width,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(40),
+                topLeft: Radius.circular(40),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: size.height / 2),
-              height: size.height,
-              width: size.width,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(40),
-                  topLeft: Radius.circular(40),
+            child: const Text(''),
+          ),
+          SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/7513626-removebg-preview.png',
+                  width: size.width / 1.2,
+                  height: size.height / 6,
+                  fit: BoxFit.cover,
+                  color: Colors.white,
                 ),
-              ),
-              child: const Text(''),
+                const SizedBox(height: 40),
+                InputFeildSection(size, context),
+              ],
             ),
-            SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/7513626-removebg-preview.png',
-                    width: size.width / 1.2,
-                    height: size.height / 6,
-                    fit: BoxFit.cover,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(height: 40),
-                  InputFeildSection(size, context),
-                ],
-              ),
-            ),
-            signing_google(size)
-          ],
-        ),
+          ),
+          signingGoogle(size)
+        ],
       ),
     );
   }
 
-  Container signing_google(Size size) {
+  Container signingGoogle(Size size) {
     return Container(
       height: size.height * 0.05,
       margin: EdgeInsets.only(top: size.height * 0.85, right: 20, left: 20),
@@ -258,30 +255,29 @@ class _SignUpState extends State<SignUp> {
         email = _emailController.text;
         pass = _passController.text;
       });
-
-      User? user = await AuthController().registerWithEmail(
-        context: context,
-        email: email,
-        password: pass,
-      );
-      if (user != null) {
-        // Registration successful
-        String id = randomAlphaNumeric(10);
-        Map<String, dynamic> userInfoMap = {
-          'Name': _nameController.text,
-          'Email': _emailController.text,
-          'Wallet': '0',
-          'Id': id,
-        };
-        await DatabaseMethod.addUserDetails(userInfoMap, id);
-        await SharePefHelper.saveUserName(_nameController.text);
-        await SharePefHelper.saveUserEmail(_emailController.text);
-        await SharePefHelper.saveUserWallet('0');
-        await SharePefHelper.saveUserId(id);
-      } else {
-        // Handle registration failure
+      try {
+        User? user = await AuthController().registerWithEmail(
+          context: context,
+          email: email,
+          password: pass,
+        );
+        if (user != null) {
+          String id = randomAlphaNumeric(10);
+          Map<String, dynamic> userInfoMap = {
+            'Name': _nameController.text,
+            'Email': _emailController.text,
+            'Id': id,
+            'Wallet': '0',
+          };
+          await DatabaseMethod.addUserDetails(userInfoMap, id);
+          await SharePefHelper.saveUserName(_nameController.text);
+          await SharePefHelper.saveUserEmail(_emailController.text);
+          await SharePefHelper.saveUserWallet('0');
+          await SharePefHelper.saveUserId(id);
+        }
+      } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed. Please try again.')),
+          SnackBar(content: Text(e.toString())),
         );
       }
     }

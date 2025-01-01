@@ -10,7 +10,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool iceCream = false, pizza = false, burger = false, salad = false;
+  List<Map<String, dynamic>> items = [
+    {
+      'name': 'iceCream',
+      'image': 'assets/images/ice-cream_938012.png',
+    },
+    {'name': 'pizza', 'image': 'assets/images/pizza.png'},
+    {'name': 'burger', 'image': 'assets/images/burger.png'},
+    {'name': 'salad', 'image': 'assets/images/salad.png'},
+  ];
+
+  String selectedItem = '';
 
   @override
   Widget build(BuildContext context) {
@@ -124,149 +134,86 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       height: 280,
       child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => FoodDetails()));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(4),
-                    child: Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(16),
-                      child: Container(
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/salad2.png',
-                              height: 150,
-                              width: 150,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Stuffed Bell Peppers',
-                                  style: TextFile.header2Text(),
-                                ),
-                                Text(
-                                  'Fresh and healthy',
-                                  style: TextFile.header2LightText(),
-                                ),
-                                Text(
-                                  "\$24",
-                                  style: TextFile.header2Text(),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+        scrollDirection: Axis.horizontal,
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FoodDetails()));
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(4),
+                  child: Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/salad2.png',
+                            height: 150,
+                            width: 150,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Stuffed Bell Peppers',
+                                  style: TextFile.header2Text()),
+                              Text('Fresh and healthy',
+                                  style: TextFile.header2LightText()),
+                              Text("\$24", style: TextFile.header2Text()),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 16,
-                )
-              ],
-            );
-          }),
+              ),
+              const SizedBox(
+                width: 16,
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 
   Widget showItem() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GestureDetector(
-          onTap: () {
-            iceCream = true;
-            pizza = false;
+      children: List.generate(
+        items.length,
+        (index) {
+          String name = items[index]['name'];
+          String image = items[index]['image'];
 
-            burger = false;
-            salad = false;
-            setState(() {});
-          },
-          child: Material(
-            color: iceCream ? Colors.indigoAccent.shade100 : Colors.white,
-            elevation: 4.0,
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: Image.asset('assets/images/ice-cream_938012.png',
-                  height: 40, width: 40),
+          return GestureDetector(
+            onTap: () {
+              selectedItem = name;
+              setState(() {});
+            },
+            child: Material(
+              color: selectedItem == name ? Colors.blue.shade100 : Colors.white,
+              elevation: 4.0,
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(image, height: 40, width: 40),
+              ),
             ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            iceCream = false;
-            pizza = true;
-
-            burger = false;
-            salad = false;
-            setState(() {});
-          },
-          child: Material(
-            color: pizza ? Colors.indigoAccent.shade100 : Colors.white,
-            elevation: 4.0,
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child:
-                  Image.asset('assets/images/pizza.png', height: 40, width: 40),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            iceCream = false;
-            pizza = false;
-
-            burger = true;
-            salad = false;
-            setState(() {});
-          },
-          child: Material(
-            color: burger ? Colors.indigoAccent.shade100 : Colors.white,
-            elevation: 4.0,
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: Image.asset('assets/images/burger.png',
-                  height: 40, width: 40),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            iceCream = false;
-            pizza = false;
-
-            burger = false;
-            salad = true;
-            setState(() {});
-          },
-          child: Material(
-            color: salad ? Colors.indigoAccent.shade100 : Colors.white,
-            elevation: 4.0,
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child:
-                  Image.asset('assets/images/salad.png', height: 40, width: 40),
-            ),
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 }

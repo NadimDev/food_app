@@ -73,6 +73,17 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - lib/
+    - lib/ui/
+    - lib/ui/auth/
+    - lib/ui/home/
+    - lib/ui/model/
+    - lib/ui/utils/
+    - lib/ui/widget/
+    - lib/ui/services/
+    - lib/ui/onboarding/
+    - lib/services/
+    - lib/generated/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

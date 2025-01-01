@@ -17,9 +17,9 @@ class DatabaseMethod {
   static Future addWallet(String id, String amount) async {
     try {
       await FirebaseFirestore.instance
-          .collection('Wallet')
+          .collection('wallet')
           .doc(id)
-          .update({'Wallet': amount});
+          .set({'wallet': amount});
       print("wallet added successfully!");
     } catch (e) {
       print("Error adding wallet: $e");

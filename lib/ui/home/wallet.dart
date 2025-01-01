@@ -18,13 +18,14 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
+  final TextEditingController _controller = TextEditingController();
   Map<String, dynamic>? paymentIntent;
   int? add;
   String? wallet, id;
 
   getSharePef() async {
     wallet = await SharePefHelper.getUserWallet();
-    id = await SharePefHelper.getUserWallet();
+    id = await SharePefHelper.getUserId();
     setState(() {});
   }
 
@@ -48,14 +49,14 @@ class _WalletState extends State<Wallet> {
               child: CircularProgressIndicator(),
             )
           : Container(
-              margin: const EdgeInsets.only(top: 60),
+              margin: const EdgeInsets.only(top: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Material(
                     elevation: 2.0,
                     child: Container(
-                      padding: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 8),
                       child: Center(
                         child: Text(
                           'Wallet',
@@ -63,6 +64,9 @@ class _WalletState extends State<Wallet> {
                         ),
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 16,
                   ),
                   Container(
                     width: size.width,
@@ -90,7 +94,7 @@ class _WalletState extends State<Wallet> {
                                     .copyWith(color: Colors.black54),
                               ),
                               Text(
-                                '\$${wallet ?? '0'}',
+                                "\$${wallet!}",
                                 style: TextFile.header1TextStyle(),
                               ),
                             ],
@@ -121,7 +125,9 @@ class _WalletState extends State<Wallet> {
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            onEdit();
+                          },
                           child: const Text('Add Money'),
                         ),
                       ],
@@ -179,8 +185,8 @@ class _WalletState extends State<Wallet> {
       await Stripe.instance.presentPaymentSheet();
       add = int.parse(wallet!) + int.parse(amount);
       await SharePefHelper.saveUserWallet(add.toString());
-      await DatabaseMethod.addWallet(id!,add.toString());
-      await getSharePef();
+      await DatabaseMethod.addWallet(id!, add.toString());
+      print('Wallet: $wallet, ID: $id');
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -230,4 +236,65 @@ class _WalletState extends State<Wallet> {
       return null;
     }
   }
+
+  Future<void> onEdit() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: SingleChildScrollView(
+            child: Column(
+              spacing: 8,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  spacing: 50,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 12,
+                      backgroundColor: Colors.black,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Add Amount',
+                      style: TextFile.header2Text()
+                          .copyWith(color: ColorFile.primaryColor),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  'Amount',
+                  style: TextFile.header3Text(),
+                ),
+                TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(hintText: 'Enter Your Amount'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    makePayment(_controller.text);
+                    Navigator.pop(context);
+                    _controller.clear();
+                  },
+                  child: Text('Pay'),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
 }

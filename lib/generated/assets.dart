@@ -2,7 +2,19 @@
 class Assets {
   Assets._();
 
+  static const String authAuthController = 'lib/ui/auth/auth_controller.dart';
+  static const String authForgotePass = 'lib/ui/auth/ForgotePass.dart';
+  static const String authResetPassword = 'lib/ui/auth/reset_password.dart';
+  static const String authSignInScreen = 'lib/ui/auth/signIn_screen.dart';
+  static const String authSignUp = 'lib/ui/auth/sign_up.dart';
   static const String fontsPoppinsSemiBold = 'assets/fonts/Poppins-SemiBold.ttf';
+  static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String homeFoodDetails = 'lib/ui/home/food_details.dart';
+  static const String homeHomeScreen = 'lib/ui/home/home_screen.dart';
+  static const String homeNavBar = 'lib/ui/home/nav_bar.dart';
+  static const String homeOrder = 'lib/ui/home/order.dart';
+  static const String homeProfile = 'lib/ui/home/profile.dart';
+  static const String homeWallet = 'lib/ui/home/wallet.dart';
   static const String images7513626RemovebgPreview = 'assets/images/7513626-removebg-preview.png';
   static const String imagesBurger = 'assets/images/burger.png';
   static const String imagesFood = 'assets/images/food.jpg';
@@ -17,5 +29,18 @@ class Assets {
   static const String imagesScreen2 = 'assets/images/screen2.png';
   static const String imagesScreen3 = 'assets/images/screen3.png';
   static const String imagesWallet = 'assets/images/wallet.png';
+  static const String libMain = 'lib/main.dart';
+  static const String modelOnboardingModel = 'lib/ui/model/onboarding_model.dart';
+  static const String onboardingOnboardingController = 'lib/ui/onboarding/onboarding_controller.dart';
+  static const String onboardingOnboardingScreen = 'lib/ui/onboarding/onboarding_screen.dart';
+  static const String screenAdminLogin = 'lib/admin/screen/admin_login.dart';
+  static const String servicesDatabase = 'lib/services/database.dart';
+  static const String servicesSharePref = 'lib/ui/services/share_pref.dart';
+  static const String utilsAppConstans = 'lib/ui/utils/app_constans.dart';
+  static const String utilsColorFile = 'lib/ui/utils/color_file.dart';
+  static const String utilsElevatedButton = 'lib/ui/utils/elevated_button.dart';
+  static const String utilsInputDecorationTheme = 'lib/ui/utils/inputDecoration_theme.dart';
+  static const String utilsTextFormat = 'lib/ui/utils/text_format.dart';
+  static const String widgetCustomSnackbar = 'lib/ui/widget/custom_snackbar.dart';
 
 }

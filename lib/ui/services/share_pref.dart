@@ -6,9 +6,9 @@ class SharePefHelper {
   static String userEmail = 'userEmail';
   static String userWallet = 'userWallet';
 
-  static Future<bool> saveUserId(String getUserId) async {
+  static Future<bool> saveUserId(String getUserIdKey) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    return pref.setString(userId, getUserId); // Use `getUserId`
+    return pref.setString(userId, getUserIdKey); // Use `getUserId`
   }
 
   static Future<bool> saveUserName(String getUserName) async {

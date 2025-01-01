@@ -29,7 +29,7 @@ class AuthController {
         message: 'Registration Successful',
       );
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (builder) => const NavBar()));
+          context, MaterialPageRoute(builder: (builder) => const SignIn()));
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // Handle specific errors

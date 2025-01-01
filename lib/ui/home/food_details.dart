@@ -129,7 +129,7 @@ class _FoodDetailsState extends State<FoodDetails> {
               ],
             ),
             const Spacer(),
-            TotalPriceSection(),
+            totalPriceSection(),
             const SizedBox(
               height: 16,
             ),
@@ -139,7 +139,7 @@ class _FoodDetailsState extends State<FoodDetails> {
     );
   }
 
-  Row TotalPriceSection() {
+  Row totalPriceSection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
