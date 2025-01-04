@@ -4,7 +4,7 @@ import 'food_details.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
+static const String name='/homeScreen';
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }

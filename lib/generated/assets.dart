@@ -7,6 +7,7 @@ class Assets {
   static const String authResetPassword = 'lib/ui/auth/reset_password.dart';
   static const String authSignInScreen = 'lib/ui/auth/signIn_screen.dart';
   static const String authSignUp = 'lib/ui/auth/sign_up.dart';
+  static const String customWidget = 'lib/custom/widget.dart';
   static const String fontsPoppinsSemiBold = 'assets/fonts/Poppins-SemiBold.ttf';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String homeFoodDetails = 'lib/ui/home/food_details.dart';
@@ -33,7 +34,9 @@ class Assets {
   static const String modelOnboardingModel = 'lib/ui/model/onboarding_model.dart';
   static const String onboardingOnboardingController = 'lib/ui/onboarding/onboarding_controller.dart';
   static const String onboardingOnboardingScreen = 'lib/ui/onboarding/onboarding_screen.dart';
+  static const String screenAddFood = 'lib/admin/screen/add_food.dart';
   static const String screenAdminLogin = 'lib/admin/screen/admin_login.dart';
+  static const String screenHomeAdmin = 'lib/admin/screen/home_admin.dart';
   static const String servicesDatabase = 'lib/services/database.dart';
   static const String servicesSharePref = 'lib/ui/services/share_pref.dart';
   static const String utilsAppConstans = 'lib/ui/utils/app_constans.dart';
