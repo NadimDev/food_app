@@ -7,7 +7,9 @@ import 'home_admin.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
-static const String name='/admin';
+
+  static const String name = '/admin';
+
   @override
   State<AdminLogin> createState() => _AdminLoginState();
 }
@@ -128,27 +130,33 @@ class _AdminLoginState extends State<AdminLogin> {
     FirebaseFirestore.instance.collection('Admin').get().then(
       (snapshot) {
         for (var value in snapshot.docs) {
-          if (value.data()['id'] != _emailController.text.trim()) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Your id is not correct'),
-              ),
-            );
-          } else if (value.data()['password'] != _passController.text) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                backgroundColor: Colors.white,
-                content: Text(
-                  'Your password is not correct',
-                  style: TextStyle(color: Colors.black),
+          if (mounted) {
+            if (value.data()['id'] != _emailController.text.trim()) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Your id is not correct'),
                 ),
-              ),
-            );
+              );
+            }
+          } else if (value.data()['password'] != _passController.text) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor: Colors.white,
+                  content: Text(
+                    'Your password is not correct',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              );
+            }
           } else {
             Route route = MaterialPageRoute(
               builder: (context) => const HomeAdmin(),
             );
-            Navigator.pushReplacement(context, route);
+            if (mounted) {
+              Navigator.pushReplacement(context, route);
+            }
           }
         }
       },
